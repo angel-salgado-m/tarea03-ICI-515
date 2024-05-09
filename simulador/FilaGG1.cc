@@ -48,7 +48,9 @@ void Llegada::processEvent()
 	
 }
 
-
+// Modificar logica segun cantidad de abarrotes aqui.
+// Más tiempos de servicio segun tipo?
+// Valor randomico para la probabilidad de se tenga que escanear manualmente un abarrote de tipo A
 void OcuparServidor::processEvent()
 {
 	std::stringstream ssEvLog;

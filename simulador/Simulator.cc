@@ -75,7 +75,7 @@ void Simulator::rescheduleDelayedEvents()
 		
 		ssLog << std::setprecision(6) << std::fixed;
 		ssLog << "reprogramando id=" << currentEvent->id << ", time=" << currentEvent->time;
-		ssLog << ", itRescheduled=" << currentEvent->itRescheduled << "\n";
+		ssLog << "\t itRescheduled=" << currentEvent->itRescheduled << "\n";
 		
 	
 		if(currentEvent->itRescheduled){
