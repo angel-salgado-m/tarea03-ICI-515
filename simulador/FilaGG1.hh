@@ -26,6 +26,8 @@ public:
 		id = theSim->getSizeEventQueue(); 
 	}
 	Llegada(double tiempo, uint32_t id): Event(tiempo, id) {}
+
+	Llegada(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : Event(tiempo, id, cantAbarrotesA, cantAbarrotesB) {}
 	
 	virtual void processEvent();
 
@@ -34,7 +36,7 @@ public:
 class OcuparServidor : public EventSimConnector, public Event
 {
 public:
-	OcuparServidor(double tiempo, uint32_t id): Event(tiempo, id)
+	OcuparServidor(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -45,7 +47,7 @@ public:
 class Salir : public EventSimConnector, public Event
 {
 public:
-	Salir(double tiempo, uint32_t id): Event(tiempo, id)
+	Salir(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB  ): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
