@@ -7,7 +7,7 @@ Event::Event(double t) : time(t), id(0), itRescheduled(false)
 }
 
 
-Event::Event(double t, uint32_t id) : time(t), id(id), itRescheduled(false)
+Event::Event(double t, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : time(t), id(id), itRescheduled(false), cantAbarrotesA(cantAbarrotesA), cantAbarrotesB(cantAbarrotesB)
 { 
 	
 }
@@ -21,6 +21,8 @@ void Event::log(std::stringstream& tss)
 		header << std::setprecision(6) << std::fixed;
 		header << this->time << "\t";
 		header << this->id   << "\t";
+		header << this->cantAbarrotesA << "\t";
+		header << this->cantAbarrotesB << "\t";
 	
 		std::cout << header.str();
 		std::cout << tss.str();

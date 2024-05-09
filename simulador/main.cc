@@ -44,9 +44,12 @@ int main(int argc, char* argv[])
 		double tBetweenArrivals;
 		tBetweenArrivals = Random::exponential(rate);
 
+		int cantAbarrotesA = Random::integer(1, 100);
+		int cantAbarrotesB = Random::integer(1, 100);
+
 		tArrival += tBetweenArrivals;
-		Event* ev = new Llegada(tArrival, id);
-		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << '\n';
+		Event* ev = new Llegada(tArrival, id, cantAbarrotesA, cantAbarrotesB);
+		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << ", cantidad de Abarrotes A: " << ev->cantAbarrotesA << ", cantidad de abarrotes B: " << ev->cantAbarrotesB <<'\n';
 		
 		GG1Sim->log(ssEvLog);
 		

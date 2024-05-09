@@ -18,7 +18,7 @@ void Llegada::processEvent()
 		ssEvLog << "==> pasa al servidor.\n";
 		this->log(ssEvLog);
 		
-		Event* ev = new OcuparServidor(time, id);
+		Event* ev = new OcuparServidor(time, id, cantAbarrotesA, cantAbarrotesB);
 		ev->itRescheduled = false;
 		theSim->scheduleEvent(ev);	
 	}
@@ -36,7 +36,7 @@ void Llegada::processEvent()
 		
 		// (2) Se crea un nuevo evento, manteniendo el mismo identificador del 
 		//     evento original
-		Event* ev = new Llegada(newTime, id);
+		Event* ev = new Llegada(newTime, id, cantAbarrotesA, cantAbarrotesB);
 		ev->itRescheduled = true;
 		
 		// (3) Se planifica el nuevo evento
@@ -60,7 +60,7 @@ void OcuparServidor::processEvent()
 	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
 	this->log(ssEvLog);
 	
-	theSim->scheduleEvent(new Salir(time + Tservicio, id));
+	theSim->scheduleEvent(new Salir(time + Tservicio, id, cantAbarrotesA, cantAbarrotesB));
 }
 
 
