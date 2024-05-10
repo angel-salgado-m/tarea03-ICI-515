@@ -1,4 +1,5 @@
 #include <FilaGG1.hh>
+#include "global.hh"
 
 FilaGG1::FilaGG1(): Simulator(), cajaLibre(true)
 {
@@ -16,11 +17,12 @@ void LlegadaCaja::processEvent()
 	
 	if( theSim->cajaLibre ){
 		theSim->cajaLibre = false;
-		
 		ssEvLog << "==> pasa a la caja.\n";
 		this->log(ssEvLog);
+		double abarrotesA = Random::integer(0,29);
+		double abarrotesB = Random::integer(0,29);
 		
-		Event* ev = new OcuparCaja(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB);
+		Event* ev = new OcuparCaja(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB);
 		ev->itRescheduled = false;
 		theSim->scheduleEvent(ev);	
 	}
@@ -64,25 +66,67 @@ void OcuparCaja::processEvent()
 
 	
 	ssEvLog << "==> Llega a la caja con tiempo:" << time <<  "\n";
+
 	this->log(ssEvLog);
 	
-	theSim->scheduleEvent(new Escanear(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
+	if (abarrotesA==0){
+		theSim->scheduleEvent(new EscanearB(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB));
+	}else{
+		theSim->scheduleEvent(new EscanearA(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB));
+	}
+
+	// theSim->scheduleEvent(new Escanear(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 }
 
-void Escanear::processEvent()
+void EscanearA::processEvent()
 {
 	std::stringstream ssEvLog;
 
 
 	// Tiempo que se va a demorar en pasar las compras
-	uint32_t  Tservicio = Random::integer(1,30);
+	uint32_t  Tservicio = Random::integer(1,10);
 
-	ssEvLog << "==> escanea abarrote.\n";
+	ssEvLog << "==> escanea abarrote de tipo A.\n";
 	this->log(ssEvLog);
-	
+	while (abarrotesA>0)
+	{
+		double abarrote = Random::integer(0,100);
+		if (abarrote<rateFallo)
+		{
+			abarrotesA--;
+			total_a++;
+			Tservicio+=Random::integer(1,5);
+		}else{
+			abarrotesA--;
+			total_a++;
+			Tservicio+=Random::integer(1,30);
+		}
+	}
+
 	// Debe replanificar los eventos que fueron pospuestos
+	if (abarrotesB==0){
+		theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
+	}else{
+		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB,abarrotesA, abarrotesB));
+	}
+}
+
+void EscanearB::processEvent()
+{
+	std::stringstream ssEvLog;
+
+	uint32_t  Tservicio = Random::integer(1,10);
+
+	ssEvLog << "==> escanea abarrote de tipo B.\n";
+	this->log(ssEvLog);
+
+	while (abarrotesB>0)
+	{
+		abarrotesB--;
+		total_b++;
+		Tservicio+=Random::integer(1,5);
+	}
 	theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
-	
 }
 
 void Salir::processEvent()
@@ -94,7 +138,7 @@ void Salir::processEvent()
 	ssEvLog << "==> Fin servicio.\n";
 	this->log(ssEvLog);
 	
-	
+	e++;
 	// Debe replanificar los eventos que fueron pospuestos
 	theSim->rescheduleDelayedEvents();
 

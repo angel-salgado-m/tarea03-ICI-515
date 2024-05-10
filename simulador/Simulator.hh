@@ -21,6 +21,8 @@ public:
 	Event(double t);
 	Event(double t, uint32_t id);
 	Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB);
+	Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB,double abarrotesA,double abarrotesB);
+
 
 	virtual ~Event() {}
 
@@ -35,6 +37,8 @@ public:
 	double rateFallo;
 	double tiempoAbarrotesA;
 	double tiempoAbarrotesB;
+	double abarrotesA;
+	double abarrotesB;
 	
 	static bool enableLog;
 	
