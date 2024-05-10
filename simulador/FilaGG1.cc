@@ -18,7 +18,7 @@ void Llegada::processEvent()
 		tiempoSeleccionAbarrotes = -tiempoSeleccionAbarrotes;
 	}
 
-	ssEvLog << "==> id:"<< this->id << "se toma en seleccionar " << tiempoSeleccionAbarrotes << "segundos." << "\n";
+	ssEvLog << "==> id: "<< this->id << "se toma en seleccionar " << tiempoSeleccionAbarrotes << " segundos." << "\n";
 
 	// Revisar signos, temporal
 	abarrotesA = static_cast<int>(round(Random::normal(mediaAbarrotesA, 20)));
@@ -111,56 +111,62 @@ void EscanearA::processEvent()
 {
 	std::stringstream ssEvLog;
 
-
 	// Tiempo que se va a demorar en pasar las compras
 	uint32_t  Tservicio = Random::integer(1,10);
 
-	ssEvLog << "==> escanean abarrotes de tipo A.\n";
+	if (abarrotesA > 0) {
 
-	if (abarrotesA>0){
-		total_a++;
-		double fallo = Random::integer(0,100);
-		if (fallo < rateFallo)
-		{
-			// El escaneo de tipo A toma entre 1 y 5 segundos
-			Tservicio+=Random::integer(1,5);
-			ssEvLog << "==> Se escanea abarrote. +" << Tservicio << " segundos\n";
-		}else
-		{
-			// El escaneo al fallar toma el mismo tiempo que si hubiera sido de tipo B y se hace de forma manual
-			Tservicio+=Random::integer(4,30);
-			ssEvLog << "==> Fallo en el abarrote. +" << Tservicio << " segundos\n";
-		}
-		theSim->scheduleEvent(new EscanearA(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA-1, abarrotesB));
-	}else{
-		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));
-	}
-	this->log(ssEvLog);
-	// Se lleva a la finalizacion del servicio para replanificar
-	// Si no quedan abarrotes de de tipo B, se finaliza el servicio. De lo contrario, se escanean los de tipo B
-	if (abarrotesB==0){
-		theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo));
-	}else{
-		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));
-	}
+        double fallo = Random::integer(0, 100);
+
+        if (fallo < rateFallo) {
+
+			total_a++;
+            Tservicio += Random::integer(10, 30);  // Tiempo extra si hay fallo en el escaneo. Mismos valores de los abarrotes de tipo B
+            ssEvLog << "==> Fallo en el abarrote. +" << Tservicio << " segundos\n";
+
+        } else {
+			total_a++;
+            ssEvLog << "==> Se escanea abarrote. +" << Tservicio << " segundos\n";
+
+        }
+		this->log(ssEvLog);
+        theSim->scheduleEvent(new EscanearA(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA - 1, abarrotesB));
+
+    } else if (abarrotesA == 0 && abarrotesB > 0) {
+
+        // Si no quedan abarrotes A pero aún hay abarrotes B, comienza a escanear B
+        theSim->scheduleEvent(new EscanearB(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));
+
+    } else if (abarrotesA == 0 && abarrotesB == 0) {
+
+        // Si no quedan ni abarrotes A ni B, planifica el evento de salida
+        theSim->scheduleEvent(new Salir(time, id, tasaSeleccionAbarrotes, rateFallo));
+
+    }
+
 }
 
 void EscanearB::processEvent()
 {
 	std::stringstream ssEvLog;
 
-	// Escanear los articulos de tipo B toma entre 4 y 30 segundos
-	uint32_t  Tservicio = Random::integer(4, 30); 
+	// Escanear los articulos de tipo B toma entre 10 y 30 segundos
+	uint32_t  Tservicio = Random::integer(10, 30); 
 
-	ssEvLog << "==> escanea abarrote de tipo B.\n";
-	this->log(ssEvLog);
 	
-	if (abarrotesB>0){
-		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB-1));
+	if (abarrotesB > 0) {
+
 		total_b++;
-	}
-	
-	theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo));
+        theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB - 1));
+        ssEvLog << "==> Escanea abarrote de tipo B. +" << Tservicio << " segundos\n";
+		this->log(ssEvLog);
+
+    } else if (abarrotesB == 0 && abarrotesA == 0) {
+
+        // Si ya no quedan abarrotes de tipo B y se han terminado los de tipo A, se planifica el evento de salida
+        theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo));
+
+    }
 }
 
 void Salir::processEvent()

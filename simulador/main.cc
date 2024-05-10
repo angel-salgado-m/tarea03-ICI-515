@@ -59,6 +59,9 @@ int main(int argc, char* argv[])
 
 	// Ejecutar la simulación
 	GG1Sim->run();
+
+	// Mostrar resultados
+	GG1Sim->showStats();
 	
 	delete GG1Sim;
 	

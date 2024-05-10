@@ -1,4 +1,5 @@
 #include <Simulator.hh>
+#include <global.hh>
 
 
 Event::Event(double t) : time(t), id(0), itRescheduled(false)
@@ -36,7 +37,7 @@ void Event::log(std::stringstream& tss)
 	
 		header << std::setprecision(6) << std::fixed;
 		header << this->time << "\t";
-		header << this->id   << "\t";
+		header << "id: " << this->id   << "\t";
 	
 		std::cout << header.str();
 		std::cout << tss.str();
@@ -119,6 +120,15 @@ void Simulator::rescheduleDelayedEvents()
 uint32_t Simulator::getSizeEventQueue()
 {
 	return(eventQueue.size());
+}
+
+void Simulator::showStats()
+{
+	std::cout << "Simulación finalizada\n";
+	std::cout << "Tiempo de simulación: " << time << " = " << time/60 << " minutos.\n";
+	std::cout << "Cantidad total de abarrotes de tipo A vendidos: " << total_a << "\n";
+	std::cout << "Cantidad total de abarrotes de tipo B vendidos: " << total_b << "\n";
+	std::cout << "Cantidad total de trabajos realizados: " << e << "\n";
 }
 
 

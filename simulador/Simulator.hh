@@ -61,6 +61,7 @@ class Simulator
 public:
 	Simulator();
 	void run();
+	void showStats();
 	
 	void scheduleEvent(Event* newEvent);
 	void rescheduleDelayedEvents();
