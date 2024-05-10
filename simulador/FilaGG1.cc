@@ -11,14 +11,28 @@ void Llegada::processEvent()
 	std::stringstream ssEvLog;
 
 	ssEvLog << "==> llega al minimarket.\n";
-	this->log(ssEvLog);
 
 	double tiempoSeleccionAbarrotes = Random::normal(tasaSeleccionAbarrotes, 60);
 
+	if(tiempoSeleccionAbarrotes < 0){
+		tiempoSeleccionAbarrotes = -tiempoSeleccionAbarrotes;
+	}
+
 	ssEvLog << "==> id:"<< this->id << "se toma en seleccionar " << tiempoSeleccionAbarrotes << "segundos." << "\n";
 
+	// Revisar signos, temporal
 	abarrotesA = static_cast<int>(round(Random::normal(mediaAbarrotesA, 20)));
+	if (abarrotesA < 0){
+		abarrotesA = -abarrotesA;
+	}
+	ssEvLog << abarrotesA << " abarrotes de tipo A.\n";
 	abarrotesB = static_cast<int>(round(Random::normal(mediaAbarrotesB, 20)));
+	if (abarrotesB < 0){
+		abarrotesB = -abarrotesB;
+	}
+	ssEvLog << abarrotesB << " abarrotes de tipo B.\n";
+	this->log(ssEvLog);
+
 
 
 	theSim->scheduleEvent(new LlegadaCaja(time + tiempoSeleccionAbarrotes, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));

@@ -37,10 +37,6 @@ void Event::log(std::stringstream& tss)
 		header << std::setprecision(6) << std::fixed;
 		header << this->time << "\t";
 		header << this->id   << "\t";
-		header << this->tasaSeleccionAbarrotes << "\t";
-		header << this->rateFallo << "\t";
-		header << this->mediaAbarrotesA << "\t";
-		header << this->mediaAbarrotesB << "\t";
 	
 		std::cout << header.str();
 		std::cout << tss.str();

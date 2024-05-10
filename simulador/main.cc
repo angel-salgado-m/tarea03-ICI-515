@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 		tBetweenArrivals = Random::exponential(rate);
 
 		tArrival += tBetweenArrivals;
-		Event* ev = new LlegadaCaja(tArrival, id, tasaSeleccionAbarrotes, rateFallo, mediaAbarrotesA, mediaAbarrotesB);
+		Event* ev = new Llegada(tArrival, id, tasaSeleccionAbarrotes, rateFallo, mediaAbarrotesA, mediaAbarrotesB);
 		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << '\n';
 		
 		GG1Sim->log(ssEvLog);
