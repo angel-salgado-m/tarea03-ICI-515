@@ -34,8 +34,8 @@ private:
 						 			"\t--test     genera archivo de pruebas de nros aleatorios y termina.\n"
 									"\t--qrate    tasa de tiempo de seleccion de abarrotes.\n"
 									"\t--fail	  probabilidad de fallo en el escaneo de abarrotes A.\n"
-									"\t--tipoa    tiempo de abarrotes tipo A.\n"
-									"\t--tipob    tiempo de abarrotes tipo B.\n"
+									"\t--tipoa    media de abarrotes tipo A.\n"
+									"\t--tipob    Media de abarrotes tipo B.\n"
 									"\t--slogs    habilita logs del simulador en pantalla.\n"
 									"\t--elogs    habilita logs de los eventos en pantalla.\n"
 						 			"\t-h   Muestra esta salida y termina.\n";
@@ -45,8 +45,8 @@ private:
 		double    tasaLlegada;
 		double	  tasaSeleccionAbarrotes;
 		double	  probabilidadFallo;
-		double	  tiempoAbarrotesA;
-		double	  tiempoAbarrotesB;
+		double	  mediaAbarrotesA;
+		double	  mediaAbarrotesB;
 		bool      randomTest;
 		bool      enableSimulatorLogs;
 		bool      enableEventsLogs;
@@ -80,8 +80,8 @@ CheckArgs::CheckArgs(int _argc, char **_argv)
 	parametros.tasaLlegada   = 0;
 	parametros.tasaSeleccionAbarrotes = 0;
 	parametros.probabilidadFallo = 0;
-	parametros.tiempoAbarrotesA = 0;
-	parametros.tiempoAbarrotesB = 0;
+	parametros.mediaAbarrotesA = 0;
+	parametros.mediaAbarrotesB = 0;
 	parametros.randomTest    = false;
 	parametros.enableSimulatorLogs    = false;
 	parametros.enableEventsLogs = false;
@@ -127,10 +127,10 @@ void CheckArgs::loadArgs()
 			parametros.probabilidadFallo = std::atof(optarg);
 			break;
 		case 'a':
-			parametros.tiempoAbarrotesA = std::atof(optarg);
+			parametros.mediaAbarrotesA = std::atof(optarg);
 			break;
 		case 'b':
-			parametros.tiempoAbarrotesB = std::atof(optarg);
+			parametros.mediaAbarrotesB = std::atof(optarg);
 			break;
 		case 'h':
 		default:
@@ -141,7 +141,7 @@ void CheckArgs::loadArgs()
 
 	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0 
 		|| parametros.tasaSeleccionAbarrotes == 0 || parametros.probabilidadFallo == 0 
-		|| parametros.tiempoAbarrotesA == 0 || parametros.tiempoAbarrotesB == 0)
+		|| parametros.mediaAbarrotesA == 0 || parametros.mediaAbarrotesB == 0)
 	{
 		printUsage();
 		exit(EXIT_FAILURE);

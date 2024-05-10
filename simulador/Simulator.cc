@@ -11,12 +11,19 @@ Event::Event(double t, uint32_t id) : time(t), id(id), itRescheduled(false)
 
 }
 
-Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : time(t), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), tiempoAbarrotesA(tiempoAbarrotesA), tiempoAbarrotesB(tiempoAbarrotesB)
+Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo) : time(t), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo)
+{
+
+}
+
+
+
+Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double mediaAbarrotesA, double mediaAbarrotesB) : time(t), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), mediaAbarrotesA(mediaAbarrotesA), mediaAbarrotesB(mediaAbarrotesB)
 { 
 	
 }
 
-Event::Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB, double abarrotesA, double abarrotesB) : time(tiempo), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), tiempoAbarrotesA(tiempoAbarrotesA), tiempoAbarrotesB(tiempoAbarrotesB), abarrotesA(abarrotesA), abarrotesB(abarrotesB)
+Event::Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB) : time(tiempo), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), abarrotesA(abarrotesA), abarrotesB(abarrotesB)
 { 
 	
 }
@@ -32,8 +39,8 @@ void Event::log(std::stringstream& tss)
 		header << this->id   << "\t";
 		header << this->tasaSeleccionAbarrotes << "\t";
 		header << this->rateFallo << "\t";
-		header << this->tiempoAbarrotesA << "\t";
-		header << this->tiempoAbarrotesB << "\t";
+		header << this->mediaAbarrotesA << "\t";
+		header << this->mediaAbarrotesB << "\t";
 	
 		std::cout << header.str();
 		std::cout << tss.str();
@@ -58,6 +65,8 @@ void Simulator::run ()
 		nextEvent->processEvent();
 		delete nextEvent;
 	}
+
+
 }
 
 void Simulator::scheduleEvent(Event* newEvent)

@@ -36,9 +36,10 @@ int main(int argc, char* argv[])
 	
 	// Cargar eventos del sistema
 	double rate = args.getArgs().tasaLlegada; 
-	double rateAbarrotes = args.getArgs().tasaSeleccionAbarrotes;
-	double rateA = args.getArgs().tiempoAbarrotesA;
-	double rateB = args.getArgs().tiempoAbarrotesB;
+	double tasaSeleccionAbarrotes = args.getArgs().tasaSeleccionAbarrotes;
+	double mediaAbarrotesA = args.getArgs().mediaAbarrotesA;
+	double mediaAbarrotesB = args.getArgs().mediaAbarrotesB;
+	double rateFallo = args.getArgs().probabilidadFallo;
 	
 	double tArrival = 0.0;
 	for(size_t id = 0; id < args.getArgs().totalTrabajos; id += 1) {
@@ -47,15 +48,9 @@ int main(int argc, char* argv[])
 		double tBetweenArrivals;
 		tBetweenArrivals = Random::exponential(rate);
 
-		double rateFallo = args.getArgs().probabilidadFallo;
-
-		double tasaSeleccionAbarrotes = Random::exponential(rateAbarrotes);
-		double tiempoAbarrotesA = Random::exponential(rateA);
-		double tiempoAbarrotesB = Random::exponential(rateB);
-
 		tArrival += tBetweenArrivals;
-		Event* ev = new LlegadaCaja(tArrival, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB);
-		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << ", tasa de Seleccion de abarrotes" <<'\n';
+		Event* ev = new LlegadaCaja(tArrival, id, tasaSeleccionAbarrotes, rateFallo, mediaAbarrotesA, mediaAbarrotesB);
+		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << '\n';
 		
 		GG1Sim->log(ssEvLog);
 		

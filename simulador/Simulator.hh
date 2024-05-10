@@ -20,8 +20,9 @@ public:
 	// Construct sets time of event.
 	Event(double t);
 	Event(double t, uint32_t id);
-	Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB);
-	Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB,double abarrotesA,double abarrotesB);
+	Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo);
+	Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB);
+	Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double mediaAbarrotesA, double mediaAbarrotesB);
 
 
 	virtual ~Event() {}
@@ -35,8 +36,8 @@ public:
 	bool     itRescheduled;
 	double tasaSeleccionAbarrotes; 
 	double rateFallo;
-	double tiempoAbarrotesA;
-	double tiempoAbarrotesB;
+	double mediaAbarrotesA;
+	double mediaAbarrotesB;
 	double abarrotesA;
 	double abarrotesB;
 	
