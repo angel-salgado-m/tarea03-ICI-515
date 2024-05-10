@@ -44,8 +44,9 @@ int main(int argc, char* argv[])
 		double tBetweenArrivals;
 		tBetweenArrivals = Random::exponential(rate);
 
-		int cantAbarrotesA = Random::integer(1, 100);
-		int cantAbarrotesB = Random::integer(1, 100);
+		// Separar esto antes de llegar a la fila?
+		int cantAbarrotesA = Random::integer(0, 50);
+		int cantAbarrotesB = Random::integer(0, 50);
 
 		tArrival += tBetweenArrivals;
 		Event* ev = new Llegada(tArrival, id, cantAbarrotesA, cantAbarrotesB);

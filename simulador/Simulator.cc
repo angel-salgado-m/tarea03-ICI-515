@@ -6,6 +6,10 @@ Event::Event(double t) : time(t), id(0), itRescheduled(false)
 
 }
 
+Event::Event(double t, uint32_t id) : time(t), id(id), itRescheduled(false)
+{
+	 
+}
 
 Event::Event(double t, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : time(t), id(id), itRescheduled(false), cantAbarrotesA(cantAbarrotesA), cantAbarrotesB(cantAbarrotesB)
 { 

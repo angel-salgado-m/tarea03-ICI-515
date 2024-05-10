@@ -9,25 +9,33 @@ extern int optind, opterr, optopt;
 
 class CheckArgs {
 private:
-	// 1) Modificar esta sección
-	const std::string optString = "j:r:t:seh";
 	
-	const struct option optStringLong[7] = {
+	const std::string optString = "j:r:t:q:f:a:b:seh";
+	
+	const struct option optStringLong[11] = {
 		{"jobs"   , required_argument, nullptr, 'j'},
 		{"rate", required_argument, nullptr, 'r'},
 		{"test", required_argument, nullptr, 't'},
+		{"qrate", required_argument, nullptr, 'q'},
+		{"fail", required_argument, nullptr, 'f'},
+		{"tipoa", required_argument, nullptr, 'a'},
+		{"tipob", required_argument, nullptr, 'b'},
 		{"slogs", no_argument, nullptr, 's'},
 		{"elogs", no_argument, nullptr, 'e'},
 		{"help", no_argument, nullptr, 'h'},
 		{nullptr, no_argument, nullptr, 0}
 	};
 
-	const std::string opciones = "--jobs <total jobs> --rate <rate> [--test][--simlogs][--eventslogs][--help]";
+	const std::string opciones = "--jobs <total jobs> --rate <rate> --qrate <quantityrate> --fail <failrate> --tipoa <rate> --tipob <rate> [--test][--simlogs][--eventslogs][--help]";
 
 	const std::string descripcion  = "Descripción:\n"
 	                                "\t--jobs     cantidad total de trabajos a simular (integer).\n"
 						 			"\t--rate     tasa de llegada de trabajos (cada da 'rate' unidades de tiempo llega un elemento al sistema).\n"
 						 			"\t--test     genera archivo de pruebas de nros aleatorios y termina.\n"
+									"\t--brate    tasa de tiempo de seleccion de abarrotes.\n"
+									"\t--fail	  probabilidad de fallo en el escaneo de abarrotes A.\n"
+									"\t--tipoa    tiempo de abarrotes tipo A.\n"
+									"\t--tipob    tiempo de abarrotes tipo B.\n"
 									"\t--slogs    habilita logs del simulador en pantalla.\n"
 									"\t--elogs    habilita logs de los eventos en pantalla.\n"
 						 			"\t-h   Muestra esta salida y termina.\n";
@@ -35,6 +43,10 @@ private:
 	typedef struct args_t {
 		uint32_t  totalTrabajos;
 		double    tasaLlegada;
+		double	  tasaSeleccionAbarrotes;
+		double	  probabilidadFallo;
+		double	  tiempoAbarrotesA;
+		double	  tiempoAbarrotesB;
 		bool      randomTest;
 		bool      enableSimulatorLogs;
 		bool      enableEventsLogs;
@@ -66,6 +78,10 @@ CheckArgs::CheckArgs(int _argc, char **_argv)
 {
 	parametros.totalTrabajos = 0;
 	parametros.tasaLlegada   = 0;
+	parametros.tasaSeleccionAbarrotes = 0;
+	parametros.probabilidadFallo = 0;
+	parametros.tiempoAbarrotesA = 0;
+	parametros.tiempoAbarrotesB = 0;
 	parametros.randomTest    = false;
 	parametros.enableSimulatorLogs    = false;
 	parametros.enableEventsLogs = false;
@@ -104,6 +120,18 @@ void CheckArgs::loadArgs()
 		case 't':
 			parametros.randomTest = true;
 			break;
+		case 'q':
+			parametros.tasaSeleccionAbarrotes = std::atof(optarg);
+			break;
+		case 'f':
+			parametros.probabilidadFallo = std::atof(optarg);
+			break;
+		case 'a':
+			parametros.tiempoAbarrotesA = std::atof(optarg);
+			break;
+		case 'b':
+			parametros.tiempoAbarrotesB = std::atof(optarg);
+			break;
 		case 'h':
 		default:
 			printUsage();
@@ -111,7 +139,10 @@ void CheckArgs::loadArgs()
 		}
 	}
 
-	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0  ) {
+	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0 
+		|| parametros.tasaSeleccionAbarrotes == 0 || parametros.probabilidadFallo == 0 
+		|| parametros.tiempoAbarrotesA == 0 || parametros.tiempoAbarrotesB == 0)
+	{
 		printUsage();
 		exit(EXIT_FAILURE);
 	}

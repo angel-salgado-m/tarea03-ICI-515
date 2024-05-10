@@ -1,24 +1,26 @@
 #include <FilaGG1.hh>
 
-FilaGG1::FilaGG1(): Simulator(), servidorLibre(true)
+FilaGG1::FilaGG1(): Simulator(), cajaLibre(true)
 {
 	
 }
 
+
+// Eventos de llegada al minimarket
 void Llegada::processEvent()
 {
 	std::stringstream ssEvLog;
 	
-	ssEvLog << "==> llega  a la fila.\n";
+	ssEvLog << "==> llega a la fila de la caja.\n";
 	this->log(ssEvLog);
 	
-	if( theSim->servidorLibre ){
-		theSim->servidorLibre = false;
+	if( theSim->cajaLibre ){
+		theSim->cajaLibre = false;
 		
-		ssEvLog << "==> pasa al servidor.\n";
+		ssEvLog << "==> pasa a la caja.\n";
 		this->log(ssEvLog);
 		
-		Event* ev = new OcuparServidor(time, id, cantAbarrotesA, cantAbarrotesB);
+		Event* ev = new OcuparCaja(time, id, cantAbarrotesA, cantAbarrotesB);
 		ev->itRescheduled = false;
 		theSim->scheduleEvent(ev);	
 	}
@@ -31,7 +33,7 @@ void Llegada::processEvent()
 		newTime = time + theSim->rescheduleTime;
 		
 		ssEvLog << std::setprecision(6) << std::fixed;
-		ssEvLog << "==> servidor ocupado, replanificado para t=" << newTime << "\n";
+		ssEvLog << "==> caja ocupada, replanificado para t=" << newTime << "\n";
 		this->log(ssEvLog);
 		
 		// (2) Se crea un nuevo evento, manteniendo el mismo identificador del 
@@ -48,31 +50,46 @@ void Llegada::processEvent()
 	
 }
 
+
+
+
 // Modificar logica segun cantidad de abarrotes aqui.
 // Más tiempos de servicio segun tipo?
 // Valor randomico para la probabilidad de se tenga que escanear manualmente un abarrote de tipo A
-void OcuparServidor::processEvent()
+void OcuparCaja::processEvent()
 {
 	std::stringstream ssEvLog;
 	
-	theSim->servidorLibre = false;
-	// Tiempo que se va a demorar en pasar las compras
-	uint32_t  Tservicio = Random::integer(1,30);
+	theSim->cajaLibre = false;
+
 	
-	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
+	ssEvLog << "==> Llega a la caja con tiempo:" << time << "\n\t\t\t\t\t\tCantidad A: " << cantAbarrotesA << "\n\t\t\t\t\t\tCantidad B: " << cantAbarrotesB << "\n";
 	this->log(ssEvLog);
 	
-	theSim->scheduleEvent(new Salir(time + Tservicio, id, cantAbarrotesA, cantAbarrotesB));
+	theSim->scheduleEvent(new Escanear(time, id, cantAbarrotesA, cantAbarrotesB));
 }
 
+void Escanear::processEvent()
+{
+	std::stringstream ssEvLog;
 
 
+	// Tiempo que se va a demorar en pasar las compras
+	uint32_t  Tservicio = Random::integer(1,30);
+
+	ssEvLog << "==> escanea abarrote.\n";
+	this->log(ssEvLog);
+	
+	// Debe replanificar los eventos que fueron pospuestos
+	theSim->scheduleEvent(new Salir(time + Tservicio, id, cantAbarrotesA, cantAbarrotesB));
+	
+}
 
 void Salir::processEvent()
 {
 	std::stringstream ssEvLog;
 	
-	theSim->servidorLibre = true;
+	theSim->cajaLibre = true;
 	
 	ssEvLog << "==> Fin servicio.\n";
 	this->log(ssEvLog);

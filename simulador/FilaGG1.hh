@@ -6,7 +6,7 @@
 class FilaGG1 : public Simulator
 {
 public:
-	bool servidorLibre;
+	bool cajaLibre;
 	
 	FilaGG1();
 	
@@ -19,6 +19,7 @@ public:
 };
 
 
+// Eventos de llegada al minimarket
 class Llegada : public EventSimConnector, public Event
 {
 public:
@@ -33,10 +34,35 @@ public:
 
 };
 
-class OcuparServidor : public EventSimConnector, public Event
+class LlegadaCaja : public EventSimConnector, public Event
 {
 public:
-	OcuparServidor(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
+	LlegadaCaja(double tiempo): Event(tiempo) { 
+		id = theSim->getSizeEventQueue(); 
+	}
+
+	LlegadaCaja(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : Event(tiempo, id, cantAbarrotesA, cantAbarrotesB) {}
+	
+	virtual void processEvent();
+
+};
+
+// Evento de ocupacion de caja
+class OcuparCaja : public EventSimConnector, public Event
+{
+public:
+	OcuparCaja(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
+	{ }
+	
+	virtual void processEvent();
+
+};
+
+// Evento de escaneo de abarrotes
+class Escanear : public EventSimConnector, public Event
+{
+public:
+	Escanear(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -44,6 +70,7 @@ public:
 };
 
 
+// Liberacion de la caja
 class Salir : public EventSimConnector, public Event
 {
 public:
