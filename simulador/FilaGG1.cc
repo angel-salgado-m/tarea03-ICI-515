@@ -7,7 +7,7 @@ FilaGG1::FilaGG1(): Simulator(), cajaLibre(true)
 
 
 // Eventos de llegada al minimarket
-void Llegada::processEvent()
+void LlegadaCaja::processEvent()
 {
 	std::stringstream ssEvLog;
 	
@@ -20,7 +20,7 @@ void Llegada::processEvent()
 		ssEvLog << "==> pasa a la caja.\n";
 		this->log(ssEvLog);
 		
-		Event* ev = new OcuparCaja(time, id, cantAbarrotesA, cantAbarrotesB);
+		Event* ev = new OcuparCaja(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB);
 		ev->itRescheduled = false;
 		theSim->scheduleEvent(ev);	
 	}
@@ -38,7 +38,7 @@ void Llegada::processEvent()
 		
 		// (2) Se crea un nuevo evento, manteniendo el mismo identificador del 
 		//     evento original
-		Event* ev = new Llegada(newTime, id, cantAbarrotesA, cantAbarrotesB);
+		Event* ev = new LlegadaCaja(newTime, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB);
 		ev->itRescheduled = true;
 		
 		// (3) Se planifica el nuevo evento
@@ -63,10 +63,10 @@ void OcuparCaja::processEvent()
 	theSim->cajaLibre = false;
 
 	
-	ssEvLog << "==> Llega a la caja con tiempo:" << time << "\n\t\t\t\t\t\tCantidad A: " << cantAbarrotesA << "\n\t\t\t\t\t\tCantidad B: " << cantAbarrotesB << "\n";
+	ssEvLog << "==> Llega a la caja con tiempo:" << time <<  "\n";
 	this->log(ssEvLog);
 	
-	theSim->scheduleEvent(new Escanear(time, id, cantAbarrotesA, cantAbarrotesB));
+	theSim->scheduleEvent(new Escanear(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 }
 
 void Escanear::processEvent()
@@ -81,7 +81,7 @@ void Escanear::processEvent()
 	this->log(ssEvLog);
 	
 	// Debe replanificar los eventos que fueron pospuestos
-	theSim->scheduleEvent(new Salir(time + Tservicio, id, cantAbarrotesA, cantAbarrotesB));
+	theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 	
 }
 

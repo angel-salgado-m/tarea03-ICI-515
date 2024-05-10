@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	}
 	
 	std::cout << "Fila de atención simple\n";
-	
+
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog     = args.getArgs().enableEventsLogs;
 	
@@ -36,6 +36,9 @@ int main(int argc, char* argv[])
 	
 	// Cargar eventos del sistema
 	double rate = args.getArgs().tasaLlegada; 
+	double rateAbarrotes = args.getArgs().tasaSeleccionAbarrotes;
+	double rateA = args.getArgs().tiempoAbarrotesA;
+	double rateB = args.getArgs().tiempoAbarrotesB;
 	
 	double tArrival = 0.0;
 	for(size_t id = 0; id < args.getArgs().totalTrabajos; id += 1) {
@@ -44,13 +47,15 @@ int main(int argc, char* argv[])
 		double tBetweenArrivals;
 		tBetweenArrivals = Random::exponential(rate);
 
-		// Separar esto antes de llegar a la fila?
-		int cantAbarrotesA = Random::integer(0, 50);
-		int cantAbarrotesB = Random::integer(0, 50);
+		double rateFallo = args.getArgs().probabilidadFallo;
+
+		double tasaSeleccionAbarrotes = Random::exponential(rateAbarrotes);
+		double tiempoAbarrotesA = Random::exponential(rateA);
+		double tiempoAbarrotesB = Random::exponential(rateB);
 
 		tArrival += tBetweenArrivals;
-		Event* ev = new Llegada(tArrival, id, cantAbarrotesA, cantAbarrotesB);
-		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << ", cantidad de Abarrotes A: " << ev->cantAbarrotesA << ", cantidad de abarrotes B: " << ev->cantAbarrotesB <<'\n';
+		Event* ev = new LlegadaCaja(tArrival, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB);
+		ssEvLog << "Agregando en la FEL evento id=" << ev->id << ", timeArrive=" << ev->time << ", tasa de Seleccion de abarrotes" <<'\n';
 		
 		GG1Sim->log(ssEvLog);
 		

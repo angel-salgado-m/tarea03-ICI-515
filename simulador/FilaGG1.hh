@@ -28,7 +28,7 @@ public:
 	}
 	Llegada(double tiempo, uint32_t id): Event(tiempo, id) {}
 
-	Llegada(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : Event(tiempo, id, cantAbarrotesA, cantAbarrotesB) {}
+	Llegada(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB) {}
 	
 	virtual void processEvent();
 
@@ -41,7 +41,7 @@ public:
 		id = theSim->getSizeEventQueue(); 
 	}
 
-	LlegadaCaja(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB) : Event(tiempo, id, cantAbarrotesA, cantAbarrotesB) {}
+	LlegadaCaja(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB) {}
 	
 	virtual void processEvent();
 
@@ -51,7 +51,7 @@ public:
 class OcuparCaja : public EventSimConnector, public Event
 {
 public:
-	OcuparCaja(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
+	OcuparCaja(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -62,7 +62,7 @@ public:
 class Escanear : public EventSimConnector, public Event
 {
 public:
-	Escanear(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
+	Escanear(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -74,7 +74,7 @@ public:
 class Salir : public EventSimConnector, public Event
 {
 public:
-	Salir(double tiempo, uint32_t id, int cantAbarrotesA, int cantAbarrotesB  ): Event(tiempo, id, cantAbarrotesA, cantAbarrotesB)
+	Salir(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
 	{ }
 	
 	virtual void processEvent();
