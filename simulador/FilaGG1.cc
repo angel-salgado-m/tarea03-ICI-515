@@ -109,7 +109,6 @@ void OcuparCaja::processEvent()
 		theSim->scheduleEvent(new EscanearA(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));
 	}
 
-	// theSim->scheduleEvent(new Escanear(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 }
 
 // Escaneado de productos de tipo A
