@@ -112,6 +112,7 @@ void OcuparCaja::processEvent()
 	// theSim->scheduleEvent(new Escanear(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 }
 
+// Escaneado de productos de tipo A
 void EscanearA::processEvent()
 {
 	std::stringstream ssEvLog;
@@ -151,6 +152,7 @@ void EscanearA::processEvent()
 
 }
 
+// Escaneado de productos de tipo B
 void EscanearB::processEvent()
 {
 	std::stringstream ssEvLog;
