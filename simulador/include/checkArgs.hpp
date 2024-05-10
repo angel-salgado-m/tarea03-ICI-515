@@ -32,10 +32,10 @@ private:
 	                                "\t--jobs     cantidad total de trabajos a simular (integer).\n"
 						 			"\t--rate     tasa de llegada de trabajos (cada da 'rate' unidades de tiempo llega un elemento al sistema).\n"
 						 			"\t--test     genera archivo de pruebas de nros aleatorios y termina.\n"
-									"\t--qrate    tasa de tiempo de seleccion de abarrotes.\n"
-									"\t--fail	  probabilidad de fallo en el escaneo de abarrotes A.\n"
-									"\t--tipoa    media de abarrotes tipo A.\n"
-									"\t--tipob    Media de abarrotes tipo B.\n"
+									"\t--qrate    tasa de tiempo promedio de seleccion de abarrotes.\n"
+									"\t--fail	  probabilidad de fallo en el escaneo de abarrotes A (0 - 100).\n"
+									"\t--tipoa    media de cantidad a comprar abarrotes tipo A.\n"
+									"\t--tipob    Media de cantidad a comprar abarrotes tipo B.\n"
 									"\t--slogs    habilita logs del simulador en pantalla.\n"
 									"\t--elogs    habilita logs de los eventos en pantalla.\n"
 						 			"\t-h   Muestra esta salida y termina.\n";
@@ -140,7 +140,7 @@ void CheckArgs::loadArgs()
 	}
 
 	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0 
-		|| parametros.tasaSeleccionAbarrotes == 0 || parametros.probabilidadFallo == 0 
+		|| parametros.tasaSeleccionAbarrotes == 0 || parametros.probabilidadFallo <= 0 || parametros.probabilidadFallo > 100 
 		|| parametros.mediaAbarrotesA == 0 || parametros.mediaAbarrotesB == 0)
 	{
 		printUsage();
