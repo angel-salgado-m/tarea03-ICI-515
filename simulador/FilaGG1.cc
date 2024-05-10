@@ -116,29 +116,26 @@ void EscanearA::processEvent()
 	uint32_t  Tservicio = Random::integer(1,10);
 
 	ssEvLog << "==> escanean abarrotes de tipo A.\n";
-	this->log(ssEvLog);
-	while (abarrotesA>0)
-	{
-		// Se genera un numero aleatorio, si es mayor a la probabilidad del fallo, se escanea de forma manual
+
+	if (abarrotesA>0){
+		total_a++;
 		double fallo = Random::integer(0,100);
 		if (fallo < rateFallo)
 		{
 			// El escaneo de tipo A toma entre 1 y 5 segundos
-			abarrotesA--;
-			total_a++;
 			Tservicio+=Random::integer(1,5);
 			ssEvLog << "==> Se escanea abarrote. +" << Tservicio << " segundos\n";
-
-		}else{
+		}else
+		{
 			// El escaneo al fallar toma el mismo tiempo que si hubiera sido de tipo B y se hace de forma manual
-			abarrotesA--;
-			total_a++;
 			Tservicio+=Random::integer(4,30);
 			ssEvLog << "==> Fallo en el abarrote. +" << Tservicio << " segundos\n";
-			this->log(ssEvLog);
 		}
+		theSim->scheduleEvent(new EscanearA(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA-1, abarrotesB));
+	}else{
+		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB));
 	}
-
+	this->log(ssEvLog);
 	// Se lleva a la finalizacion del servicio para replanificar
 	// Si no quedan abarrotes de de tipo B, se finaliza el servicio. De lo contrario, se escanean los de tipo B
 	if (abarrotesB==0){
@@ -157,13 +154,12 @@ void EscanearB::processEvent()
 
 	ssEvLog << "==> escanea abarrote de tipo B.\n";
 	this->log(ssEvLog);
-
-	while (abarrotesB>0)
-	{
-		abarrotesB--;
+	
+	if (abarrotesB>0){
+		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB-1));
 		total_b++;
-		Tservicio+=Random::integer(1,5);
 	}
+	
 	theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo));
 }
 
