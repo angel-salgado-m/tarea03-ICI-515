@@ -1,5 +1,5 @@
 #include <FilaGG1.hh>
-#include "global.hh"
+#include <global.hh>
 
 FilaGG1::FilaGG1(): Simulator(), cajaLibre(true)
 {
@@ -55,9 +55,7 @@ void LlegadaCaja::processEvent()
 
 
 
-// Modificar logica segun cantidad de abarrotes aqui.
-// Más tiempos de servicio segun tipo?
-// Valor randomico para la probabilidad de se tenga que escanear manualmente un abarrote de tipo A
+// Cliente llega a la caja
 void OcuparCaja::processEvent()
 {
 	std::stringstream ssEvLog;
@@ -90,16 +88,22 @@ void EscanearA::processEvent()
 	this->log(ssEvLog);
 	while (abarrotesA>0)
 	{
+		// cambiar nombre, tu cachai
 		double abarrote = Random::integer(0,100);
 		if (abarrote<rateFallo)
 		{
+			
 			abarrotesA--;
 			total_a++;
 			Tservicio+=Random::integer(1,5);
+			ssEvLog << "==> Se escanea abarrote. +" << Tservicio << " segundos\n";
+
 		}else{
 			abarrotesA--;
 			total_a++;
 			Tservicio+=Random::integer(1,30);
+			ssEvLog << "==> Fallo en el abarrote. +" << Tservicio << " segundos\n";
+			this->log(ssEvLog);
 		}
 	}
 
@@ -107,7 +111,7 @@ void EscanearA::processEvent()
 	if (abarrotesB==0){
 		theSim->scheduleEvent(new Salir(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB));
 	}else{
-		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB,abarrotesA, abarrotesB));
+		theSim->scheduleEvent(new EscanearB(time + Tservicio, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB));
 	}
 }
 

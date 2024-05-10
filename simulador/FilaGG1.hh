@@ -2,7 +2,7 @@
 
 #include <Simulator.hh>
 #include <Random.hh>
-#include "global.hh"
+#include <global.hh>
 class FilaGG1 : public Simulator
 {
 public:
@@ -41,7 +41,8 @@ public:
 		id = theSim->getSizeEventQueue(); 
 	}
 
-	LlegadaCaja(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB) {}
+	LlegadaCaja(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB) 
+	{ }
 	
 	virtual void processEvent();
 
@@ -51,7 +52,7 @@ public:
 class OcuparCaja : public EventSimConnector, public Event
 {
 public:
-	OcuparCaja(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB,double abarrotesA,double abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB)
+	OcuparCaja(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB, double abarrotesA, double abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -62,7 +63,7 @@ public:
 class EscanearA : public EventSimConnector, public Event
 {
 public:
-	EscanearA(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
+	EscanearA(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB, double abarrotesA, double abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -72,7 +73,7 @@ public:
 class EscanearB : public EventSimConnector, public Event
 {
 public:
-	EscanearB(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
+	EscanearB(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB, double abarrotesA, double abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB, abarrotesA, abarrotesB)
 	{ }
 	
 	virtual void processEvent();
@@ -82,7 +83,7 @@ public:
 class Salir : public EventSimConnector, public Event
 {
 public:
-	Salir(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
+	Salir(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, tiempoAbarrotesA, tiempoAbarrotesB)
 	{ }
 	
 	virtual void processEvent();

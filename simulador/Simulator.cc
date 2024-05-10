@@ -16,6 +16,11 @@ Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFa
 	
 }
 
+Event::Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double tiempoAbarrotesA, double tiempoAbarrotesB, double abarrotesA, double abarrotesB) : time(tiempo), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), tiempoAbarrotesA(tiempoAbarrotesA), tiempoAbarrotesB(tiempoAbarrotesB), abarrotesA(abarrotesA), abarrotesB(abarrotesB)
+{ 
+	
+}
+
 
 void Event::log(std::stringstream& tss)
 {
