@@ -14,7 +14,6 @@ int main(int argc, char* argv[])
 		Random::test(10000 /*cantidad de nros*/, "randomTest.txt" /*archivo de salida*/,  true /*salir al terminar*/);
 	}
 	
-	std::cout << "Fila de atención simple\n";
 
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog     = args.getArgs().enableEventsLogs;
@@ -33,6 +32,8 @@ int main(int argc, char* argv[])
 	double mediaAbarrotesA = args.getArgs().mediaAbarrotesA;
 	double mediaAbarrotesB = args.getArgs().mediaAbarrotesB;
 	double rateFallo = args.getArgs().probabilidadFallo;
+	
+	// std::cout << numCajas<<" ";
 	
 	double tArrival = 0.0;
 	for(size_t id = 0; id < args.getArgs().totalTrabajos; id += 1) {

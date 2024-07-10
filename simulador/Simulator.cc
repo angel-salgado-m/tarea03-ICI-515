@@ -20,11 +20,11 @@ void Event::log(std::stringstream& tss)
 {
 	if(enableLog){
 		std::stringstream header;
-	
+
 		header << std::setprecision(6) << std::fixed;
 		header << this->time << "\t";
 		header << "id: " << this->id   << "\t";
-	
+
 		std::cout << header.str();
 		std::cout << tss.str();
 	}
@@ -54,23 +54,23 @@ void Simulator::rescheduleDelayedEvents()
 {
 	std::priority_queue<Event*, std::vector<Event *>, EventComparator> eventQueueTMP;
 	std::stringstream ssLog;
-	
+
 	double biasTime = 0.0;
-	
+
 	ssLog << "Reprogramando FEL\n";
-	
+
 	while( !eventQueue.empty() ){
 		Event* currentEvent = eventQueue.top();
-		
+
 		ssLog << std::setprecision(6) << std::fixed;
 		ssLog << "reprogramando id=" << currentEvent->id << ", time=" << currentEvent->time;
 		ssLog << "\t itRescheduled=" << currentEvent->itRescheduled << "\n";
-		
+
 		if(currentEvent->itRescheduled){
 			currentEvent->time = this->time + biasTime;
 			currentEvent->itRescheduled = false;
 			ssLog << "\ttime-new=" << currentEvent->time << "\n";
-						
+
 			biasTime += this->biasDeltaTime;
 		}
 		eventQueueTMP.push(currentEvent);
@@ -87,11 +87,12 @@ uint32_t Simulator::getSizeEventQueue()
 
 void Simulator::showStats()
 {
-	std::cout << "Simulación finalizada\n";
-	std::cout << "Tiempo de servicio: " << time << " = " << time/60 << " minutos.\n";
-	std::cout << "Cantidad total de abarrotes de tipo A vendidos: " << total_a << "\n";
-	std::cout << "Cantidad total de abarrotes de tipo B vendidos: " << total_b << "\n";
-	std::cout << "Cantidad total de trabajos realizados: " << e << "\n";
+	// std::cout << "Simulación finalizada\n";
+	// std::cout << "Tiempo de servicio: " << time << " = " << time/60 << " minutos.\n";
+	// std::cout << "Cantidad total de abarrotes de tipo A vendidos: " << total_a << "\n";
+	// std::cout << "Cantidad total de abarrotes de tipo B vendidos: " << total_b << "\n";
+	// std::cout << "Cantidad total de trabajos realizados: " << e << "\n";
+	std::cout << time;
 }
 
 void Simulator::log(std::stringstream& oss)
