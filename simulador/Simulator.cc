@@ -88,7 +88,7 @@ uint32_t Simulator::getSizeEventQueue()
 void Simulator::showStats()
 {
 	std::cout << "Simulación finalizada\n";
-	std::cout << "Tiempo de simulación: " << time << " = " << time/60 << " minutos.\n";
+	std::cout << "Tiempo de servicio: " << time << " = " << time/60 << " minutos.\n";
 	std::cout << "Cantidad total de abarrotes de tipo A vendidos: " << total_a << "\n";
 	std::cout << "Cantidad total de abarrotes de tipo B vendidos: " << total_b << "\n";
 	std::cout << "Cantidad total de trabajos realizados: " << e << "\n";

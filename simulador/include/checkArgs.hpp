@@ -12,9 +12,10 @@ private:
 	
 	const std::string optString = "j:r:t:q:f:a:b:seh";
 	
-	const struct option optStringLong[11] = {
+	const struct option optStringLong[12] = {
 		{"jobs"   , required_argument, nullptr, 'j'},
 		{"rate", required_argument, nullptr, 'r'},
+		{"cajas", required_argument, nullptr, 'c'},
 		{"test", required_argument, nullptr, 't'},
 		{"qrate", required_argument, nullptr, 'q'},
 		{"fail", required_argument, nullptr, 'f'},
@@ -26,11 +27,12 @@ private:
 		{nullptr, no_argument, nullptr, 0}
 	};
 
-	const std::string opciones = "--jobs <total jobs> --rate <rate> --qrate <quantityrate> --fail <failrate> --tipoa <rate> --tipob <rate> [--test][--simlogs][--eventslogs][--help]";
+	const std::string opciones = "--jobs <total jobs> --rate <rate> --cajas --qrate <quantityrate> --fail <failrate> --tipoa <rate> --tipob <rate> [--test][--simlogs][--eventslogs][--help]";
 
 	const std::string descripcion  = "Descripción:\n"
 	                                "\t--jobs     cantidad total de trabajos a simular (integer).\n"
 						 			"\t--rate     tasa de llegada de trabajos (cada da 'rate' unidades de tiempo llega un elemento al sistema).\n"
+									"\t--cajas    cantidad de cajas en el minimarket.\n"
 						 			"\t--test     genera archivo de pruebas de nros aleatorios y termina.\n"
 									"\t--qrate    tasa de tiempo promedio de seleccion de abarrotes.\n"
 									"\t--fail	  probabilidad de fallo en el escaneo de abarrotes A (0 - 100).\n"
@@ -42,6 +44,7 @@ private:
 
 	typedef struct args_t {
 		uint32_t  totalTrabajos;
+		uint32_t  numCajas;
 		double    tasaLlegada;
 		double	  tasaSeleccionAbarrotes;
 		double	  probabilidadFallo;
@@ -78,6 +81,7 @@ CheckArgs::CheckArgs(int _argc, char **_argv)
 {
 	parametros.totalTrabajos = 0;
 	parametros.tasaLlegada   = 0;
+	parametros.numCajas = 0;
 	parametros.tasaSeleccionAbarrotes = 0;
 	parametros.probabilidadFallo = 0;
 	parametros.mediaAbarrotesA = 0;
@@ -111,6 +115,9 @@ void CheckArgs::loadArgs()
 		case 'r':
 			parametros.tasaLlegada = std::atof(optarg);
 			break;
+		case 'c':
+			parametros.numCajas = std::atoi(optarg);
+			break;
 		case 's':
 			parametros.enableSimulatorLogs = true;
 			break;
@@ -139,7 +146,7 @@ void CheckArgs::loadArgs()
 		}
 	}
 
-	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0 
+	if ( parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0 || parametros.numCajas == 0
 		|| parametros.tasaSeleccionAbarrotes == 0 || parametros.probabilidadFallo <= 0 || parametros.probabilidadFallo > 100 
 		|| parametros.mediaAbarrotesA == 0 || parametros.mediaAbarrotesB == 0)
 	{

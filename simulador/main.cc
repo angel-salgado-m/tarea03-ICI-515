@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog     = args.getArgs().enableEventsLogs;
 
-	numCajas = 5;  // Asegúrate de que este argumento se pase correctamente
+	numCajas = args.getArgs().numCajas;  // Asegúrate de que este argumento se pase correctamente
 	
 	FilaGG1* GG1Sim = new FilaGG1();
 	EventSimConnector::theSim = GG1Sim;
