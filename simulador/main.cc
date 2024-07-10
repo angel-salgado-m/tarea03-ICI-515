@@ -1,19 +1,10 @@
-/**********************************************************************************************
- *
- * Ejemplo de implementación de fila G/G/1/inf
- *
- **********************************************************************************************/
-
-
 #include <FilaGG1.hh>
 #include <Random.hh>
 #include <checkArgs.hpp>
 
-
 FilaGG1* EventSimConnector::theSim;
 bool     Event::enableLog;
 bool     Simulator::enableLog;
-
 
 int main(int argc, char* argv[])
 {
@@ -27,8 +18,10 @@ int main(int argc, char* argv[])
 
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog     = args.getArgs().enableEventsLogs;
+
+	numCajas = 5;  // Asegúrate de que este argumento se pase correctamente
 	
-	FilaGG1*  GG1Sim = new FilaGG1();
+	FilaGG1* GG1Sim = new FilaGG1();
 	EventSimConnector::theSim = GG1Sim;
 	
 	GG1Sim->timeMax        = 1000000;

@@ -3,13 +3,11 @@
 #include <Simulator.hh>
 #include <Random.hh>
 #include <global.hh>
+
 class FilaGG1 : public Simulator
 {
 public:
-	bool cajaLibre;
-	
 	FilaGG1();
-	
 };
 
 class EventSimConnector 
@@ -17,7 +15,6 @@ class EventSimConnector
 public:		
 	static FilaGG1* theSim;
 };
-
 
 // Eventos de llegada al minimarket
 class Llegada : public EventSimConnector, public Event
@@ -31,7 +28,6 @@ public:
 	Llegada(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double mediaAbarrotesA, double mediaAbarrotesB ) : Event(tiempo, id, tasaSeleccionAbarrotes, rateFallo, mediaAbarrotesA, mediaAbarrotesB) {}
 	
 	virtual void processEvent();
-
 };
 
 // LLegada a la fila de la caja, la cantidad de abarrotes ya fueron seleccionados.
@@ -46,52 +42,47 @@ public:
 	{ }
 	
 	virtual void processEvent();
-
 };
 
 // Evento de ocupacion de caja
 class OcuparCaja : public EventSimConnector, public Event
 {
 public:
-	OcuparCaja(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB)
+	OcuparCaja(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB, int cajaIndex) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB), cajaIndex(cajaIndex)
 	{ }
 	
 	virtual void processEvent();
-
+	int cajaIndex;
 };
 
 // Evento de escaneo de abarrotes
 class EscanearA : public EventSimConnector, public Event
 {
 public:
-	EscanearA(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB)
+	EscanearA(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB, int cajaIndex) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB), cajaIndex(cajaIndex)
 	{ }
 	
 	virtual void processEvent();
-
+	int cajaIndex;
 };
 
 class EscanearB : public EventSimConnector, public Event
 {
 public:
-	EscanearB(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB)
+	EscanearB(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB, int cajaIndex) : Event(time, id, tasaSeleccionAbarrotes, rateFallo, abarrotesA, abarrotesB), cajaIndex(cajaIndex)
 	{ }
 	
 	virtual void processEvent();
-
+	int cajaIndex;
 };
+
 // Liberacion de la caja
 class Salir : public EventSimConnector, public Event
 {
 public:
-	Salir(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo) : Event(time, id, tasaSeleccionAbarrotes, rateFallo)
+	Salir(double time, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int cajaIndex) : Event(time, id, tasaSeleccionAbarrotes, rateFallo), cajaIndex(cajaIndex)
 	{ }
 	
 	virtual void processEvent();
-
+	int cajaIndex;
 };
-
-
-
-
-

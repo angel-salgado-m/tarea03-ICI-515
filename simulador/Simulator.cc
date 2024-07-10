@@ -1,34 +1,20 @@
 #include <Simulator.hh>
 #include <global.hh>
 
-
 Event::Event(double t) : time(t), id(0), itRescheduled(false)
-{
-
-}
+{ }
 
 Event::Event(double t, uint32_t id) : time(t), id(id), itRescheduled(false)
-{
-
-}
+{ }
 
 Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo) : time(t), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo)
-{
-
-}
-
-
+{ }
 
 Event::Event(double t, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, double mediaAbarrotesA, double mediaAbarrotesB) : time(t), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), mediaAbarrotesA(mediaAbarrotesA), mediaAbarrotesB(mediaAbarrotesB)
-{ 
-	
-}
+{ }
 
 Event::Event(double tiempo, uint32_t id, double tasaSeleccionAbarrotes, double rateFallo, int abarrotesA, int abarrotesB) : time(tiempo), id(id), itRescheduled(false), tasaSeleccionAbarrotes(tasaSeleccionAbarrotes), rateFallo(rateFallo), abarrotesA(abarrotesA), abarrotesB(abarrotesB)
-{ 
-	
-}
-
+{ }
 
 void Event::log(std::stringstream& tss)
 {
@@ -41,17 +27,12 @@ void Event::log(std::stringstream& tss)
 	
 		std::cout << header.str();
 		std::cout << tss.str();
-		
 	}
 	tss.str("");
-	
 }
-
 
 Simulator::Simulator() : time(0), timeMax(0), eventQueue(), biasDeltaTime(1e-6)
-{
-	
-}
+{ }
 
 void Simulator::run ()
 {
@@ -62,8 +43,6 @@ void Simulator::run ()
 		nextEvent->processEvent();
 		delete nextEvent;
 	}
-
-
 }
 
 void Simulator::scheduleEvent(Event* newEvent)
@@ -71,12 +50,6 @@ void Simulator::scheduleEvent(Event* newEvent)
 	eventQueue.push(newEvent);
 }
 
-
-/*
-	Reprograma todos los eventos que fueron replanificados 
-	para el futuro. Por ejemplo, puden ser eventos de llegada que no pueden 
-	ser atendidos debido a que el servidor está ocupado.
-*/
 void Simulator::rescheduleDelayedEvents()
 {
 	std::priority_queue<Event*, std::vector<Event *>, EventComparator> eventQueueTMP;
@@ -88,13 +61,11 @@ void Simulator::rescheduleDelayedEvents()
 	
 	while( !eventQueue.empty() ){
 		Event* currentEvent = eventQueue.top();
-	
 		
 		ssLog << std::setprecision(6) << std::fixed;
 		ssLog << "reprogramando id=" << currentEvent->id << ", time=" << currentEvent->time;
 		ssLog << "\t itRescheduled=" << currentEvent->itRescheduled << "\n";
 		
-	
 		if(currentEvent->itRescheduled){
 			currentEvent->time = this->time + biasTime;
 			currentEvent->itRescheduled = false;
@@ -102,19 +73,11 @@ void Simulator::rescheduleDelayedEvents()
 						
 			biasTime += this->biasDeltaTime;
 		}
-		
-
 		eventQueueTMP.push(currentEvent);
-	
 		eventQueue.pop();
-	
 	}
-	
-	
 	eventQueue = eventQueueTMP;
-	
 	this->log(ssLog);
-
 }
 
 uint32_t Simulator::getSizeEventQueue()
@@ -131,22 +94,10 @@ void Simulator::showStats()
 	std::cout << "Cantidad total de trabajos realizados: " << e << "\n";
 }
 
-
 void Simulator::log(std::stringstream& oss)
 {
 	if(enableLog){
 		std::cout << oss.str();
 	}
-	
 	oss.str("");
-	
 }
-
-
-
-
-
-
-
-
-
